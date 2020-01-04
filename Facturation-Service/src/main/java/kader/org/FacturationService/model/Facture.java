@@ -19,6 +19,7 @@ public class Facture {
 	private Long personneId;
 	@Transient
 	private Personne customer;
+	//@Transient
 	@OneToMany(mappedBy = "facture")
 	private Collection<ProductItem> productItems;
 	

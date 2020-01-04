@@ -8,6 +8,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 
 @Entity
 //@Data @AllArgsConstructor @NoArgsConstructor @ToString
@@ -20,6 +23,7 @@ public class ProductItem {
 	private double quantity;
 	private double price;		
 	@ManyToOne
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private Facture facture;
 	
 	
