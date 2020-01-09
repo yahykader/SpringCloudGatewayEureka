@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import kader.org.FacturationService.model.Product;
 
-@FeignClient(name="inventory-service")
+@FeignClient(name="INVENTORY-SERVICE")
 public interface InventoryServiceClient {
 	
-	@GetMapping(value="/products/{id}?projection=fullProduct")
-	Product findProductById(@PathVariable("id") Long id); 
+	@GetMapping(value="/products/{id}")
+	Product findProductById(@PathVariable(name="id") Long id); 
 	
-	@GetMapping(value="/products?projection=fullProduct")
-	PagedModel<Product> findAll();
+	@GetMapping(value="/products")
+	PagedModel<Product> findAllProducts();
 
 }

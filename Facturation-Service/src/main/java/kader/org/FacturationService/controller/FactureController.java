@@ -23,16 +23,14 @@ public class FactureController {
 	@Autowired
 	private InventoryServiceClient inventoryServiceClient;
 	
-	@GetMapping(value="/factures/full/{id}")
-	public Facture getFacture(@PathVariable("id") Long id) {
+	@GetMapping(value="/detailFacture/{id}")
+	public Facture getFacture(@PathVariable(name="id") Long id) {
 		Facture facture=factureRepository.findById(id).get();
-		facture.setCustomer(customerServiceClient.findPersonneByID(facture.getPersonneId()));
-		facture.setProductItems(productItemRepository.findByFactureId(id));
-		facture.getProductItems().forEach(pi->{
-			
+		facture.setCustomer(customerServiceClient.findCustomerByID(facture.getCustomerId()));
+		//facture.setProductItems(productItemRepository.findByFactureId(id));
+		facture.getProductItems().forEach(pi->{	
 		    pi.setProduct(inventoryServiceClient.findProductById(pi.getProductId()));
 		});
-		
 		return facture;
 	}
 

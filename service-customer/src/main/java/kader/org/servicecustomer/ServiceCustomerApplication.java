@@ -14,67 +14,34 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 @Entity
-class Personne{
+@Data @NoArgsConstructor @AllArgsConstructor @ToString
+class Customer{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private String email;
 	
-	public Personne() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public Personne(Long id, String name, String email) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.email = email;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}	
-	
-	public String toString() {
-		   return "Customer " + this.id +
-			  " : name " + this.name +
-			  ", email " + this.email;
-		}
 }
 @RepositoryRestResource
-interface PersonneRepository extends JpaRepository<Personne, Long>{}
+interface CustomerRepository extends JpaRepository<Customer, Long>{}
 
 /*
  * @RestController class PersonneController{
  * 
- * @Autowired private PersonneRepository personneRepository;
+ * @Autowired private CustomerRepository customerRepository;
  * 
- * @GetMapping(value="/personnes") public List<Personne> AllPersonnes(){ return
+ * @GetMapping(value="/customers") public List<Customer> AllCustomers(){ return
  * personneRepository.findAll(); }
  * 
  * }
@@ -85,11 +52,14 @@ public class ServiceCustomerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ServiceCustomerApplication.class, args);
 	}
+	@Autowired
+    private RepositoryRestConfiguration restConfiguration;
 	@Bean
-	CommandLineRunner run(PersonneRepository customerRepository) {
+	CommandLineRunner run(CustomerRepository customerRepository) {
 		return args->{
-		customerRepository.save(new Personne(null,"kader","kader@gmail.com")); 
-		customerRepository.save(new Personne(null,"nesrine","nesrine@gmail.com")); 
+			restConfiguration.exposeIdsFor(Customer.class);
+		customerRepository.save(new Customer(null,"kader","kader@gmail.com")); 
+		customerRepository.save(new Customer(null,"nesrine","nesrine@gmail.com")); 
 		customerRepository.findAll().forEach(System.out::println);	
 		};	
 	}
